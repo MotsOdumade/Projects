@@ -38,7 +38,7 @@ app.get('/v1/project-analytics', (req, res) => {
             'cacheable' : false,
             'valid-request': false,
             'authorised' : false,
-            'chart-type' : '',
+            'display-as' : '',
             'suggested-title' : '',
             'description' : 'description of analytics-data',
             'analytics-data' : []
@@ -63,8 +63,8 @@ app.get('/v1/project-analytics', (req, res) => {
       } else {
             responseObj['authorised'] = true;
             // update response object with expected chart type
-            const chartType = data_to_chart(dataRequested);
-            responseObj['chart-type'] = chartType;
+            const displayType = data_to_chart(dataRequested);
+            responseObj['display-as'] = displayType;
       }
       
       // they're authorised - carry out the request
