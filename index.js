@@ -4,10 +4,10 @@ const {
       valid_request,
       authorised,
       data_to_chart,
-      task_status_request,
-      num_projects_request,
-      deadlines_met_request,
-      weekly_completion_request
+      project_completeness_breakdown_request,
+      deadlines_met_last_7_days_request,
+      task_status_breakdown_request
+      
 } = require('./helpers');
 
 const express = require('express');
@@ -69,49 +69,34 @@ app.get('/v1/project-analytics', (req, res) => {
       
       // they're authorised - carry out the request
       switch (dataRequested) {
-            case "task-status-proportions":
+            case "task-status-breakdown":
                   // a pie chart showing proportion of current tasks that are in progress, not started or completed
-                  const taskStatusObj = task_status_request(dataAbout, targetId, when);
+                  const taskStatusObj = task_status_breakdown_request(dataAbout, targetId, when);
                   responseObj['suggested-title'] = taskStatusObj['title'];
                   responseObj['analytics-data'] = taskStatusObj['sampleData'];
                   break;
-            case "deadlines-met":
+            case "deadlines-met-last-7-days":
                   // a progress-bar showing the proportion of deadlines that the individual has met in the last 7 days
-                  const deadlinesMetObj = deadlines_met_request(dataAbout, targetId, when);
+                  const deadlinesMetObj = deadlines_met_last_7_days_request(dataAbout, targetId, when);
                   responseObj['suggested-title'] = deadlinesMetObj['title'];
                   responseObj['analytics-data'] = deadlinesMetObj['sampleData'];
                   break;
-            case "weekly-task-completion":
+            case "project-completeness-breakdown":
                   // a line chart showing the (weighted) task completion over time (by week)
-                  const weeklyCompletionObj = weekly_completion_request(dataAbout, targetId, when);
-                  responseObj['suggested-title'] = weeklyCompletionObj['title'];
-                  responseObj['analytics-data'] = weeklyCompletionObj['sampleData'];
-                  break;
-            case "num-projects":
-                  // a stat describing the number of projects that an individual is currently associated with
-                  const numProjectsObj = num_projects_request(dataAbout, targetId, when);
-                  responseObj['suggested-title'] = numProjectsObj['title'];
-                  responseObj['analytics-data'] = numProjectsObj['sampleData'];
+                  const projectCompletionObj = project_completeness_breakdown_request(dataAbout, targetId, when);
+                  responseObj['suggested-title'] = projectCompletionObj['title'];
+                  responseObj['analytics-data'] = projectCompletionObj['sampleData'];
                   break;
         
   
         default:
                   // indicates a request option that hasn't yet been implemented
-                  // performance-report
+                  
          
       }
       
       
 
-// ------ COMPARING
-        // own project - specified data-about = my-project, target-id = project-id and when = time (default = now)
-        // average from team - specified data-about = project, target-id = project-id
-        // average employee - specified data-about =  avg-employee
-// ------ NUMBER OF PROJECTS - specify data = num-projects
-// ------ PERFORMANCE REPORT - specify data = performance-report
-// ------ PIE CHART - completed / not started / in progress active tasks - specify chart = pie, data = task-status-proportions
-// ------ PROGRESS BAR - deadlines met in last 7 days - specify chart = progress-bar, data = deadlines-met
-// ------ LINE GRAPH - task weight completion each week specify chart = line, data = weekly-task-completion
         return res.json(responseObj);
 
 });
