@@ -135,12 +135,15 @@ function project_completeness_breakdown_request(dataAbout, targetId, when){
 
 
 
-function deadlines_met_request(dataAbout, targetId, when){
-  const title = 'Number of Deadlines Met';
-  let sampleData = [
-    ['Deadlines Met', 5],
-    ['Total Tasks', 6]
-  ];
+function deadlines_met_last_7_days_request(dataAbout, targetId, when){
+  const title = 'Breakdown of Project Deadlines Met in the Last 7 Days';
+  let sampleData = {
+    'whole-project': {'total-tasks': 14, 'deadlines-met': 6, 'percentage-complete': 71.4},
+    'employee-breakdown': [{'name': 'John', 'total-tasks': 5, 'deadlines-met': 3, 'percentage-complete': 42.9},
+                          {'name': 'Jane', 'total-tasks': 3, 'deadlines-met': 0, 'percentage-complete': 0.0},
+                          {'name': 'Jen', 'total-tasks': 4, 'deadlines-met': 2, 'percentage-complete': 50.0},
+                          {'name': 'Jim', 'total-tasks': 2, 'deadlines-met': 1, 'percentage-complete': 50.0}] 
+    };
 
   return {'title': title, 'sampleData': sampleData};
 }
