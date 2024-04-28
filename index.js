@@ -6,7 +6,8 @@ const {
       data_to_chart,
       project_completeness_breakdown_request,
       deadlines_met_last_7_days_request,
-      task_status_breakdown_request
+      task_status_breakdown_request,
+      member_projects_request
       
 } = require('./helpers');
 
@@ -86,6 +87,12 @@ app.get('/v1/project-analytics', (req, res) => {
                   const projectCompletionObj = project_completeness_breakdown_request(dataAbout, targetId, when);
                   responseObj['suggested-title'] = projectCompletionObj['title'];
                   responseObj['analytics-data'] = projectCompletionObj['sampleData'];
+                  break;
+            case "member-projects":
+                  // a line chart showing the (weighted) task completion over time (by week)
+                  const memberProjectsObj = member_projects_request(targetId);
+                  responseObj['suggested-title'] = memberProjectsObj['title'];
+                  responseObj['analytics-data'] = memberProjectsObj['sampleData'];
                   break;
         
   
