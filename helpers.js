@@ -148,6 +148,17 @@ function deadlines_met_last_7_days_request(dataAbout, targetId, when){
   return {'title': title, 'sampleData': sampleData};
 }
 
+function task_status_breakdown_request(dataAbout, targetId, when){
+  const title = 'Breakdown of Task Progress Status';
+  let sampleData = {'whole-project': {'Complete': 10, 'In Progress': 3, 'Not Started': 1},
+                   'employee-breakdown': [{'name': 'John', 'Complete': 4, 'In Progress': 1, 'Not Started': 0},
+                                         {'name': 'Jane', 'Complete': 3, 'In Progress': 0, 'Not Started': 0}
+                                         {'name': 'Jen', 'Complete': 2, 'In Progress': 1, 'Not Started': 1}
+                                          {'name': 'Jim', 'Complete': 1, 'In Progress': 1, 'Not Started': 0}]};
+  return {'title': title, 'sampleData': sampleData};
+}
+
+
 
 function member_projects_request(targetId){
   // returns a list of objects representing the projects that the individual is currently in
