@@ -15,13 +15,13 @@ const connection = mysql.createConnection({
 });
 
 const dataChartDict = {
-      'project_completeness_breakdown': 'line',
-      'deadlines_met_last_7_days': 'progressBar',
-      'task_status_breakdown': 'pie',
-      'member-projects': 'line'
+      'project-completeness-breakdown': 'speedometer',
+      'deadlines-met-last-7-days': 'progress bar',
+      'task-status-breakdown': 'pie',
+      'member-projects': 'list'
 };
 
-const listDataAbout = ['self', 'project', 'avg-employee'];
+const listDataAbout = ['project', 'avg-project'];
 
 
 function valid_request(data_requested, client_token, data_about, target_id){
@@ -35,7 +35,7 @@ function valid_request(data_requested, client_token, data_about, target_id){
   if (listDataAbout.includes(data_about) === false){
         return false;
   }
-  if (data_about == 'avg-employee'){
+  if (data_about == 'avg-project'){
         return true;
   } 
   if (target_id == ''){
