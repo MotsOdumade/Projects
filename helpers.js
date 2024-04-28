@@ -152,9 +152,11 @@ function task_status_breakdown_request(dataAbout, targetId, when){
   const title = 'Breakdown of Task Progress Status';
   let sampleData = {'whole-project': {'Complete': 10, 'In Progress': 3, 'Not Started': 1},
                    'employee-breakdown': [{'name': 'John', 'Complete': 4, 'In Progress': 1, 'Not Started': 0},
-                                         {'name': 'Jane', 'Complete': 3, 'In Progress': 0, 'Not Started': 0}
-                                         {'name': 'Jen', 'Complete': 2, 'In Progress': 1, 'Not Started': 1}
-                                          {'name': 'Jim', 'Complete': 1, 'In Progress': 1, 'Not Started': 0}]};
+                                         {'name': 'Jane', 'Complete': 3, 'In Progress': 0, 'Not Started': 0},
+                                         {'name': 'Jen', 'Complete': 2, 'In Progress': 1, 'Not Started': 1},
+                                         {'name': 'Jim', 'Complete': 1, 'In Progress': 1, 'Not Started': 0}
+                                         ]
+                    };
   return {'title': title, 'sampleData': sampleData};
 }
 
