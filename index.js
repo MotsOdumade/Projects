@@ -28,7 +28,7 @@ app.get('/v1/project-analytics', (req, res) => {
       
        // clean query parameters
         const dataRequested = (req.query.data || '').trim().replace(/<[^>]*>/g, '');
-        const clientToken = (req.query['client-token'] || '').trim().replace(/<[^>]*>/g, '');
+        const accessCode = (req.query['access-code'] || '').trim().replace(/<[^>]*>/g, '');
         const dataAbout = (req.query['data-about'] || '').trim().replace(/<[^>]*>/g, '');
         const targetId = (req.query['target-id'] || '').trim().replace(/<[^>]*>/g, '');
         const when = (req.query.when || '').trim().replace(/<[^>]*>/g, '');
@@ -47,7 +47,7 @@ app.get('/v1/project-analytics', (req, res) => {
 
 
       // check validity of request (check if all data required for the request has been given)
-      if (valid_request(dataRequested, clientToken, dataAbout, targetId) === false){
+      if (valid_request(dataRequested, accessCode, dataAbout, targetId) === false){
             // missing data or wrong keywords specified in the request
             return res.json(responseObj);
       } else {
@@ -58,7 +58,7 @@ app.get('/v1/project-analytics', (req, res) => {
 
 
       // check authorisation
-      if (authorised(clientToken, dataAbout, targetId) === false){
+      if (authorised(accessCode, dataAbout, targetId) === false){
             // unauthorised data access
             return res.json(responseObj);
       } else {
