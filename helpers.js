@@ -3,17 +3,6 @@
 // database credentials are specified in a .env file stored within the same package on the remote machine
 // check authorised() for an example of how to query the database and process the results
 
-const mysql = require('mysql');
-require('dotenv').config();
-
-// Create a connection to the database using environment variables
-const connection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_DATABASE
-});
-
 const dataChartDict = {
       'project-completeness-breakdown': 'speedometer',
       'deadlines-met-last-7-days': 'progress bar',
@@ -24,12 +13,62 @@ const dataChartDict = {
 const listDataAbout = ['project', 'avg-project'];
 
 
-function valid_request(data_requested, client_token, data_about, target_id){
+const mysql = require('mysql');
+require('dotenv').config();
+
+function execute_sql_query(sql_query){
+  // Create a connection to the database using environment variables
+    const connection = mysql.createConnection({
+        host: process.env.DB_HOST,
+        user: process.env.DB_USERNAME,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_DATABASE
+    });
+
+    // Connect to the database
+    connection.connect((err) => {
+        if (err) {
+            console.error('Error connecting to the database:', err);
+            return false; // handle error appropriately
+        }
+        // Execute a query
+        console.log('Connected to the database');
+        connection.query(sql_query, (err, results) => {
+            if (err) {
+                console.error('Error executing query:', err);
+                connection.end(); // Close the connection if there's an error
+                return false; 
+            }
+            // access result
+              
+            // Map each row to a plain JavaScript object
+            const formattedResults = results.map(row => {
+                  
+                const formattedRow = {};
+                for (const key in row) {
+                  formattedRow[key] = row[key];
+                }
+                return formattedRow;
+              });
+
+            // Log the formatted results
+              console.log(formattedResults);
+
+              // Close the connection
+              connection.end();
+              return formattedResults;
+            });
+    });
+}
+
+
+
+function valid_request(data_requested, access_code, data_about, target_id){
       // check if the request is missing necessary information
   if (Object.keys(dataChartDict).includes(data_requested) === false){
         return false;
   }
-  if (client_token == ''){
+  if (access_code == ''){
         return false;
   }
   if (listDataAbout.includes(data_about) === false){
@@ -50,64 +89,17 @@ function valid_request(data_requested, client_token, data_about, target_id){
 }
 
 
-
-function authorised(client_token, data_about, target_id) {
-    /* if the user is in the project or the user is requesting data about themself or the average employee 
-    then authorise, else unauthorised */
-    // at the moment, the function always returns true
-    // Create a connection to the database using environment variables
-    const connection = mysql.createConnection({
-        host: process.env.DB_HOST,
-        user: process.env.DB_USERNAME,
-        password: process.env.DB_PASSWORD,
-        database: process.env.DB_DATABASE
-    });
-
-    // Connect to the database
-    connection.connect((err) => {
-        if (err) {
-            console.error('Error connecting to the database:', err);
-            return false; 
-        }
-        console.log('Connected to the database');
-        
-        const sql_query = "SELECT * FROM TokenTable;";
-        // Execute a query
-        connection.query(sql_query, (err, results) => {
-            if (err) {
-                console.error('Error executing query:', err);
-                connection.end(); // Close the connection if there's an error
-                return false; // handle error appropriately
-            }
-            // console.log('Query results:', results);
-            // now can access any results returned
-            // Check if the query returned any rows
-            if (results.length > 0) {
-                // Access specific data within the response, e.g.
-                /*
-                results.forEach(row => {
-                    console.log('Token ID:', row.tokenID);
-                    console.log('Employee ID:', row.employeeID);
-                    console.log('Time Generated:', row.timeGenerated);
-                    // Access other fields as needed
-                });
-                */
-            } else {
-                console.log('No rows returned from the query.');
-            }
-            
-
-            // Close the connection when done - do inside the query callback 
-            connection.end();
-            return true; // return inside the query callback
-            // end of query function
-        });
-      // end of connect function
-    });
-   
-// end of authorised function
+function authorised(access_code) {
+    // verify the access code provided
+    if (access_code == process.env.ACCESS_CODE){
+      // correct access code for company-analytics code 
+      execute_sql_query("SELECT * FROM EmployeeTable;");
+      return true;
+    } 
+    // else incorrect access_code 
+    return false;
+    
 }
-
 
 
 function data_to_chart(data_requested){
