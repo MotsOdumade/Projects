@@ -58,7 +58,7 @@ app.get('/v1/project-analytics', (req, res) => {
 
 
       // check authorisation
-      if (authorised(accessCode, dataAbout, targetId) === false){
+      if (authorised(accessCode) === false){
             // unauthorised data access
             return res.json(responseObj);
       } else {
