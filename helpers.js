@@ -142,13 +142,23 @@ function deadlines_met_last_7_days_request(dataAbout, targetId, when){
 
 function task_status_breakdown_request(dataAbout, targetId, when){
   const title = 'Breakdown of Task Progress Status';
-  let sampleData = {'whole-project': {'Complete': 10, 'In Progress': 3, 'Not Started': 1},
-                   'employee-breakdown': [{'name': 'John', 'Complete': 4, 'In Progress': 1, 'Not Started': 0},
-                                         {'name': 'Jane', 'Complete': 3, 'In Progress': 0, 'Not Started': 0},
-                                         {'name': 'Jen', 'Complete': 2, 'In Progress': 1, 'Not Started': 1},
-                                         {'name': 'Jim', 'Complete': 1, 'In Progress': 1, 'Not Started': 0}
-                                         ]
-                    };
+  
+  let sampleData = {
+        labels: ['Whole Project', 'Employee 1', 'Employee 2', 'Employee 3'], // Example employee names
+        datasets: [{
+          label: 'In Progress Tasks',
+          backgroundColor: 'rgba(54, 162, 235, 0.5)',
+          data: [10, 5, 8, 6] // Example number of in-progress tasks for each entity
+        }, {
+          label: 'Completed Tasks',
+          backgroundColor: 'rgba(75, 192, 192, 0.5)',
+          data: [20, 10, 15, 12] // Example number of completed tasks for each entity
+        }, {
+          label: 'Not Started',
+          backgroundColor: 'rgba(75, 192, 192, 0.5)',
+          data: [20, 10, 15, 12] // Example number of completed tasks for each entity
+        }]
+};
   return {'title': title, 'sampleData': sampleData};
 }
 
