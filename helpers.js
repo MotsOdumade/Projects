@@ -155,7 +155,7 @@ function task_status_breakdown_request(dataAbout, targetId, when){
           data: [20, 10, 15, 12] // Example number of completed tasks for each entity
         }, {
           label: 'Not Started',
-          backgroundColor: 'rgba(75, 192, 192, 0.5)',
+          backgroundColor: 'rgba(255, 174, 71, 0.5)',
           data: [25, 2, 0, 1] // Example number of completed tasks for each entity
         }]
 };
