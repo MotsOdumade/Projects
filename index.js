@@ -89,18 +89,21 @@ app.get('/v1.1/data-analytics/project-analytics', (req, res) => {
                   const deadlinesMetObj = deadlines_met_last_7_days_request(dataAbout, targetId, when);
                   responseObj['suggested-title'] = deadlinesMetObj['title'];
                   responseObj['analytics-data'] = deadlinesMetObj['sampleData'];
+                  return res.json(responseObj);
                   break;
             case "project-completeness-breakdown":
                   // a line chart showing the (weighted) task completion over time (by week)
                   const projectCompletionObj = project_completeness_breakdown_request(dataAbout, targetId, when);
                   responseObj['suggested-title'] = projectCompletionObj['title'];
                   responseObj['analytics-data'] = projectCompletionObj['sampleData'];
+                  return res.json(responseObj);
                   break;
             case "member-projects":
                   // a line chart showing the (weighted) task completion over time (by week)
                   const memberProjectsObj = member_projects_request(targetId);
                   responseObj['suggested-title'] = memberProjectsObj['title'];
                   responseObj['analytics-data'] = memberProjectsObj['sampleData'];
+                  return res.json(responseObj);
                   break;
         
   
@@ -112,7 +115,7 @@ app.get('/v1.1/data-analytics/project-analytics', (req, res) => {
       
       
 
-        return res.json(responseObj);
+        
 
 });
 
