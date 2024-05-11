@@ -139,11 +139,11 @@ function deadlines_met_last_7_days_request(dataAbout, targetId, when){
 
 async function task_status_breakdown_request(targetId) {
   const title = 'Breakdown of Task Progress Status';
-  const membersQuery = `SELECT user_id, project_id, first_name 
-        FROM project_team_member 
+  const membersQuery = `SELECT DISTINCT first_name, user.id 
+        FROM task 
         INNER JOIN user 
-        ON project_team_member.user_id = user.id 
-        WHERE project_team_member.project_id = ${targetId};`;
+        ON task.assigned_user_id = user.id 
+        WHERE project_id = ${targetId};`;
   let sampleData = {
     labels: ['Whole Project'],
     datasets: [{
