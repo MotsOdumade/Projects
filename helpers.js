@@ -182,7 +182,7 @@ async function task_status_breakdown_request(targetId) {
       sampleData['labels'].push(queryData1[i]["first_name"]);
       userIds.push(queryData1[i]["id"]);
     }
-      console.log(`${queryData1.length} many employees in the team`, queryData1);
+      
 
     for (let i = 0; i < userIds.length; i++) {
       let extraQuery1 = ` UNION ALL SELECT COUNT(*) 
@@ -221,9 +221,7 @@ async function task_status_breakdown_request(targetId) {
     let queryData2 = await execute_sql_query(query_not_started);
     let queryData3 = await execute_sql_query(query_in_progress);
     let queryData4 = await execute_sql_query(query_completed);
-    console.log(`${queryData2.length} = length of queryData2: `, query_not_started);
-    console.log(`${queryData3.length} = length of queryData3: `, query_in_progress);
-    console.log(`${queryData4.length} = length of queryData4: `, query_completed);
+    
     for (let i = 0; i < queryData2.length; i++) {
       sampleData['datasets'][0]['data'].push(queryData2[i]["Tasks"]);
     }
@@ -240,139 +238,7 @@ async function task_status_breakdown_request(targetId) {
     return { error: 'Internal server error' };
   }
 }
-/*
-async function task_status_breakdown_request(targetId){
-  const title = 'Breakdown of Task Progress Status';
-  const membersQuery = `SELECT user_id, project_id, first_name 
-        FROM project_team_member 
-        INNER JOIN user 
-        ON project_team_member.user_id = user.id 
-        WHERE project_team_member.project_id = ${targetId};`;
-  let sampleData = {
-        labels: ['Whole Project'], // Example employee names
-        datasets: [{
-          label: 'Not Started',
-          backgroundColor: 'rgba(255, 174, 71, 0.5)',
-          data: [] // Example number of completed tasks for each entity
-        },{
-          label: 'In Progress Tasks',
-          backgroundColor: 'rgba(54, 162, 235, 0.5)',
-          data: [] // Example number of in-progress tasks for each entity
-        }, {
-          label: 'Completed Tasks',
-          backgroundColor: 'rgba(75, 192, 192, 0.5)',
-          data: [] // Example number of completed tasks for each entity
-        }]
-};
 
-  try {
-    // query the database
-    let queryData1 = await execute_sql_query(membersQuery);
-    let userIds = [];
-    let query_not_started = `SELECT COUNT(*) AS Tasks
-      FROM task 
-      LEFT JOIN task_start ON task.id = task_start.task_id 
-      WHERE task_start.task_id IS NULL AND task.deadline > STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s') AND task.project_id = ${targetId}`;
-    let query_in_progress = `SELECT COUNT(*) AS Tasks
-      FROM task 
-      INNER JOIN task_start ON task.id = task_start.task_id 
-      LEFT JOIN task_complete ON task.id = task_complete.task_id   
-      WHERE task_complete.task_id IS NULL AND task.deadline > STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s') AND task.project_id = ${targetId}`;
-    let query_completed = `SELECT COUNT(*) AS Tasks
-      FROM task 
-      INNER JOIN task_complete ON task.id = task_complete.task_id 
-      WHERE task.deadline > STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s') AND task.project_id = ${targetId}`;
-        
-      for (let i = 0; i < queryData1.length; i++){
-            sampleData['labels'].push(queryData1[i]["first_name"]);
-            userIds.push(queryData1[i]["user_id"]);
-      }
-      // query tasks not started for each user within that project
-      for (let i = 0; i < userIds.length; i++){
-            let extraQuery1 = ` UNION ALL SELECT COUNT(*) 
-                  FROM task 
-                  LEFT JOIN task_start ON task.id = task_start.task_id 
-                  WHERE task_start.task_id IS NULL 
-                  AND task.deadline > STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s') 
-                  AND task.project_id = ${targetId} 
-                  AND assigned_user_id = ${userIds[i]}`;
-            query_not_started += extraQuery1;
-            extraQuery2 = ` UNION ALL SELECT COUNT(*) 
-                  FROM task 
-                  INNER JOIN task_start 
-                  ON task.id = task_start.task_id 
-                  LEFT JOIN task_complete 
-                  ON task.id = task_complete.task_id   
-                  WHERE task_complete.task_id IS 
-                  NULL AND task.deadline > STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s') 
-                  AND task.project_id = ${targetId} 
-                  AND assigned_user_id = ${userIds[i]}`;
-            query_in_progress += extraQuery2;
-            extraQuery3 = ` UNION ALL SELECT COUNT(*) 
-                  FROM task 
-                  INNER JOIN task_complete 
-                  ON task.id = task_complete.task_id 
-                  WHERE task.deadline > STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s') 
-                  AND task.project_id = ${targetId} 
-                  AND assigned_user_id = ${userIds[i]}`;
-            query_completed += extraQuery3;
-      }
-      query_not_started += ";";
-      query_in_progress += ";";
-      query_completed += ";";
-        
-      // execute the queries
-        
-      try { // not started
-          // query the database
-          let queryData2 = await execute_sql_query(query_not_started);
-          console.log("task_weight_breakdown_request has waited for sql query and got back this many rows", queryData2.length);
-            
-          try { // in progress
-                // query the database
-                let queryData3 = await execute_sql_query(query_in_progress);
-                console.log("task_weight_breakdown_request has waited for sql query and got back this many rows", queryData3.length);
-                
-                try { // completed
-                      // query the database
-                      let queryData4 = await execute_sql_query(query_completed);
-                      console.log("task_weight_breakdown_request has waited for sql query and got back this many rows", queryData4.length);
-                      // process the results
-                      for (let i = 0; i < queryData2.length; i++){
-                            sampleData['datasets'][0]['data'].push(queryData2[i]["Tasks"]);
-                      }
-                      for (let i = 0; i < queryData3.length; i++){
-                            sampleData['datasets'][1]['data'].push(queryData3[i]["Tasks"]);
-                      }
-                      for (let i = 0; i < queryData4.length; i++){
-                            sampleData['datasets'][2]['data'].push(queryData4[i]["Tasks"]);
-                      }
-                      
-                      return {'title': title, 'sampleData': sampleData};
-                  } catch (error) {
-                      console.error('Error executing SQL query:', error);
-                      // Handle the error here
-                  }
-            } catch (error) {
-                console.error('Error executing SQL query:', error);
-                // Handle the error here
-            }
-
-      } catch (error) {
-          console.error('Error executing SQL query:', error);
-          // Handle the error here
-      }
-      
-      console.log("num_projects has waited for sql query and got back this many rows", queryData1.length);
-    
-  } catch (error) {
-    console.error('Error executing SQL query:', error);
-    // Handle the error here
-  }
-  
-} 
-
-*/
 
 function member_projects_request(targetId){
   // returns a list of objects representing the projects that the individual is currently in
