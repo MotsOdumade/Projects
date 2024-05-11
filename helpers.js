@@ -136,7 +136,7 @@ function deadlines_met_last_7_days_request(dataAbout, targetId, when){
 
   return {'title': title, 'sampleData': sampleData};
 }
-
+/*
 async function task_status_breakdown_request(targetId) {
   const title = 'Breakdown of Task Progress Status';
   const membersQuery = `SELECT user_id, project_id, first_name 
@@ -237,8 +237,8 @@ async function task_status_breakdown_request(targetId) {
     return { error: 'Internal server error' };
   }
 }
-
-/*async function task_status_breakdown_request(targetId){
+*/
+async function task_status_breakdown_request(targetId){
   const title = 'Breakdown of Task Progress Status';
   const membersQuery = `SELECT user_id, project_id, first_name 
         FROM project_team_member 
@@ -367,7 +367,7 @@ async function task_status_breakdown_request(targetId) {
     // Handle the error here
   }
   
-} */
+} 
 
 
 
