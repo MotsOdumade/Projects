@@ -72,9 +72,17 @@ app.get('/v1.1/data-analytics/project-analytics', (req, res) => {
       switch (dataRequested) {
             case "task-status-breakdown":
                   // a pie chart showing proportion of current tasks that are in progress, not started or completed
-                  const taskStatusObj = task_status_breakdown_request(dataAbout, targetId, when);
-                  responseObj['suggested-title'] = taskStatusObj['title'];
-                  responseObj['analytics-data'] = taskStatusObj['sampleData'];
+                  task_status_breakdown_request(targetId)
+                      .then(taskStatusObj => {
+                          responseObj['suggested-title'] = taskStatusObj['title'];
+                          responseObj['analytics-data'] = taskStatusObj['sampleData'];
+                          res.json(responseObj);
+                      })
+                      .catch(error => {
+                          console.error('Error fetching task status breakdown:', error);
+                          // Handle the error here
+                          res.status(500).json({ error: 'Internal server error' });
+                      });
                   break;
             case "deadlines-met-last-7-days":
                   // a progress-bar showing the proportion of deadlines that the individual has met in the last 7 days
