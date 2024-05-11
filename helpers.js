@@ -233,13 +233,13 @@ async function task_status_breakdown_request(targetId){
                       let queryData4 = await execute_sql_query(query_completed);
                       console.log("task_weight_breakdown_request has waited for sql query and got back this many rows", queryData4.length);
                       // process the results
-                      for (int i = 0; i < queryData2.length; i++){
+                      for (let i = 0; i < queryData2.length; i++){
                             sampleData['datasets'][0]['data'].push(queryData2[i]["Tasks"]);
                       }
-                      for (int i = 0; i < queryData3.length; i++){
+                      for (let i = 0; i < queryData3.length; i++){
                             sampleData['datasets'][1]['data'].push(queryData3[i]["Tasks"]);
                       }
-                      for (int i = 0; i < queryData4.length; i++){
+                      for (let i = 0; i < queryData4.length; i++){
                             sampleData['datasets'][2]['data'].push(queryData4[i]["Tasks"]);
                       }
                       
