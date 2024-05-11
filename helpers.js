@@ -217,47 +217,26 @@ async function task_status_breakdown_request(targetId) {
     query_in_progress += ";";
     query_completed += ";";
 
-    try {
-      let queryData2 = await execute_sql_query(query_not_started);
-      console.log("task_weight_breakdown_request has waited for sql query and got back this many rows", queryData2.length);
+    let queryData2 = await execute_sql_query(query_not_started);
+    let queryData3 = await execute_sql_query(query_in_progress);
+    let queryData4 = await execute_sql_query(query_completed);
 
-      try {
-        let queryData3 = await execute_sql_query(query_in_progress);
-        console.log("task_weight_breakdown_request has waited for sql query and got back this many rows", queryData3.length);
-
-        try {
-          let queryData4 = await execute_sql_query(query_completed);
-          console.log("task_weight_breakdown_request has waited for sql query and got back this many rows", queryData4.length);
-
-          for (let i = 0; i < queryData2.length; i++) {
-            sampleData['datasets'][0]['data'].push(queryData2[i]["Tasks"]);
-          }
-          for (let i = 0; i < queryData3.length; i++) {
-            sampleData['datasets'][1]['data'].push(queryData3[i]["Tasks"]);
-          }
-          for (let i = 0; i < queryData4.length; i++) {
-            sampleData['datasets'][2]['data'].push(queryData4[i]["Tasks"]);
-          }
-
-          return {'title': title, 'sampleData': sampleData};
-        } catch (error) {
-          console.error('Error executing SQL query:', error);
-          return { error: 'Internal server error' }; // Add return statement
-        }
-      } catch (error) {
-        console.error('Error executing SQL query:', error);
-        return { error: 'Internal server error' }; // Add return statement
-      }
-    } catch (error) {
-      console.error('Error executing SQL query:', error);
-      return { error: 'Internal server error' }; // Add return statement
+    for (let i = 0; i < queryData2.length; i++) {
+      sampleData['datasets'][0]['data'].push(queryData2[i]["Tasks"]);
     }
+    for (let i = 0; i < queryData3.length; i++) {
+      sampleData['datasets'][1]['data'].push(queryData3[i]["Tasks"]);
+    }
+    for (let i = 0; i < queryData4.length; i++) {
+      sampleData['datasets'][2]['data'].push(queryData4[i]["Tasks"]);
+    }
+
+    return {'title': title, 'sampleData': sampleData};
   } catch (error) {
     console.error('Error executing SQL query:', error);
-    return { error: 'Internal server error' }; // Add return statement
+    return { error: 'Internal server error' };
   }
 }
-
 
 /*async function task_status_breakdown_request(targetId){
   const title = 'Breakdown of Task Progress Status';
