@@ -185,7 +185,7 @@ async function task_status_breakdown_request(targetId) {
       console.log(`${queryData1.length} many employees in the team`, queryData1);
 
     for (let i = 0; i < userIds.length; i++) {
-      let extraQuery1 = ` UNION ALL ALL SELECT COUNT(*) 
+      let extraQuery1 = ` UNION ALL SELECT COUNT(*) 
             FROM task 
             LEFT JOIN task_start ON task.id = task_start.task_id 
             WHERE task_start.task_id IS NULL 
