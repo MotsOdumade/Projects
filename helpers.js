@@ -142,7 +142,11 @@ function deadlines_met_last_7_days_request(dataAbout, targetId, when){
 
 async function task_status_breakdown_request(targetId){
   const title = 'Breakdown of Task Progress Status';
-  const membersQuery = `select user_id, project_id, first_name from project_team_member inner join user on project_team_member.user_id = user.id where project_team_member.project_id = ${targetId};`;
+  const membersQuery = `SELECT user_id, project_id, first_name 
+        FROM project_team_member 
+        INNER JOIN user 
+        ON project_team_member.user_id = user.id 
+        WHERE project_team_member.project_id = ${targetId};`;
   let sampleData = {
         labels: ['Whole Project'], // Example employee names
         datasets: [{
@@ -265,7 +269,7 @@ async function task_status_breakdown_request(targetId){
     console.error('Error executing SQL query:', error);
     // Handle the error here
   }
-  return {'title': title, 'sampleData': sampleData};
+  
 }
 
 
