@@ -136,7 +136,7 @@ function deadlines_met_last_7_days_request(dataAbout, targetId, when){
 
   return {'title': title, 'sampleData': sampleData};
 }
-/*
+
 async function task_status_breakdown_request(targetId) {
   const title = 'Breakdown of Task Progress Status';
   const membersQuery = `SELECT user_id, project_id, first_name 
@@ -182,6 +182,7 @@ async function task_status_breakdown_request(targetId) {
       sampleData['labels'].push(queryData1[i]["first_name"]);
       userIds.push(queryData1[i]["user_id"]);
     }
+      console.log(`${queryData1.length} many employees in the team`, queryData1);
 
     for (let i = 0; i < userIds.length; i++) {
       let extraQuery1 = ` UNION SELECT COUNT(*) 
@@ -220,7 +221,9 @@ async function task_status_breakdown_request(targetId) {
     let queryData2 = await execute_sql_query(query_not_started);
     let queryData3 = await execute_sql_query(query_in_progress);
     let queryData4 = await execute_sql_query(query_completed);
-
+    console.log(`${queryData2.length} = length of queryData2: `, queryData2);
+    console.log(`${queryData3.length} = length of queryData3: `, queryData3);
+    console.log(`${queryData4.length} = length of queryData4: `, queryData4);
     for (let i = 0; i < queryData2.length; i++) {
       sampleData['datasets'][0]['data'].push(queryData2[i]["Tasks"]);
     }
@@ -237,7 +240,7 @@ async function task_status_breakdown_request(targetId) {
     return { error: 'Internal server error' };
   }
 }
-*/
+/*
 async function task_status_breakdown_request(targetId){
   const title = 'Breakdown of Task Progress Status';
   const membersQuery = `SELECT user_id, project_id, first_name 
@@ -369,7 +372,7 @@ async function task_status_breakdown_request(targetId){
   
 } 
 
-
+*/
 
 function member_projects_request(targetId){
   // returns a list of objects representing the projects that the individual is currently in
