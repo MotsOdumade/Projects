@@ -240,12 +240,15 @@ async function task_status_breakdown_request(targetId) {
 }
 
 
-function member_projects_request(targetId){
+async function member_projects_request(targetId){
   // returns a list of objects representing the projects that the individual is currently in
   const title = 'Projects Involved In';
   let sampleData = [];
   // query the database
-  
+  let query_all_projects = `SELECT name as 'project-name', id as 'project-id' FROM project;`;
+  let query_projects_leading = `SELECT name as 'project-name', id as 'project-id' FROM project WHERE 'lead_id = ${targetId};`;
+  let roleQuery = `SELECT COUNT(*) AS is_manager FROM user WHERE LIKE "Manager" AND id = ${targetId};`; 
+  let query2;
   sampleData = [
     {'project-id': '1201', 'project-name': 'Skill Swap Initiative'},
     {'project-id': '1205', 'project-name': 'Office Connect Project'},
@@ -255,6 +258,31 @@ function member_projects_request(targetId){
     {'project-id': '1207', 'project-name': 'Performance Management System Upgrade'},
     {'project-id': '1200', 'project-name': 'Risk Management and Compliance Review'},
   ];
+try {
+    // query the database
+    let roleQueryData = await execute_sql_query(roleQuery);
+    if (roleQueryData.length < 1){
+      // not a manager
+      query2 = query_projects_leading;
+    } else { // maybe a leader
+      query2 = query_all_projects;
+    }
+    
+    try {
+          // query the database
+          let queryData2 = await execute_sql_query(query2);
+          sampleData = queryData2;
+          return {'title': title, 'sampleData': sampleData};
+        } catch (error) {
+          console.error('Error executing SQL query:', error);
+          // Handle the error here
+        }
+          
+      } catch (error) {
+          console.error('Error executing SQL query:', error);
+          // Handle the error here
+      }
+  
   
   return {'title': title, 'sampleData': sampleData};
 }
