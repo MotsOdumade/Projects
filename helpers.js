@@ -168,12 +168,12 @@ async function task_status_breakdown_request(targetId){
     let query_not_started = `SELECT COUNT(*) AS Tasks
       FROM task 
       LEFT JOIN task_start ON task.id = task_start.task_id 
-      WHERE task_start.task_id IS NULL AND task.deadline > STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s') AND task.project_id =${targetId}`;
+      WHERE task_start.task_id IS NULL AND task.deadline > STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s') AND task.project_id = ${targetId}`;
     let query_in_progress = `SELECT COUNT(*) AS Tasks
       FROM task 
       INNER JOIN task_start ON task.id = task_start.task_id 
       LEFT JOIN task_complete ON task.id = task_complete.task_id   
-      WHERE task_complete.task_id IS NULL AND task.deadline > STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s') AND task.project_id =${targetId}`;
+      WHERE task_complete.task_id IS NULL AND task.deadline > STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s') AND task.project_id = ${targetId}`;
     let query_completed = `SELECT COUNT(*) AS Tasks
       FROM task 
       INNER JOIN task_complete ON task.id = task_complete.task_id 
@@ -190,7 +190,7 @@ async function task_status_breakdown_request(targetId){
                   LEFT JOIN task_start ON task.id = task_start.task_id 
                   WHERE task_start.task_id IS NULL 
                   AND task.deadline > STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s') 
-                  AND task.project_id =${targetId} 
+                  AND task.project_id = ${targetId} 
                   AND assigned_user_id = ${userIds[i]}`;
             query_not_started += extraQuery1;
             extraQuery2 = ` UNION SELECT COUNT(*) 
@@ -201,7 +201,7 @@ async function task_status_breakdown_request(targetId){
                   ON task.id = task_complete.task_id   
                   WHERE task_complete.task_id IS 
                   NULL AND task.deadline > STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s') 
-                  AND task.project_id =${targetId} 
+                  AND task.project_id = ${targetId} 
                   AND assigned_user_id = ${userIds[i]}`;
             query_in_progress += extraQuery2;
             extraQuery3 = ` UNION SELECT COUNT(*) 
