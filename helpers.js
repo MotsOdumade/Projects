@@ -180,7 +180,7 @@ async function task_status_breakdown_request(targetId) {
 
     for (let i = 0; i < queryData1.length; i++) {
       sampleData['labels'].push(queryData1[i]["first_name"]);
-      userIds.push(queryData1[i]["user_id"]);
+      userIds.push(queryData1[i]["id"]);
     }
       console.log(`${queryData1.length} many employees in the team`, queryData1);
 
