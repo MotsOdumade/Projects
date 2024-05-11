@@ -247,13 +247,13 @@ async function member_projects_request(targetId){
   // query the database
   let query_all_projects = `SELECT name as 'project-name', id as 'project-id' FROM project;`;
   let query_projects_leading = `SELECT name as 'project-name', id as 'project-id' FROM project WHERE lead_id = ${targetId};`;
-  let roleQuery = `SELECT COUNT(*) FROM user WHERE role LIKE "Manager" AND id = ${targetId};`; 
+  let roleQuery = `SELECT COUNT(*) as count FROM user WHERE role LIKE "Manager" AND id = ${targetId};`; 
   let query2;
 try {
     // query the database
     let roleQueryData = await execute_sql_query(roleQuery);
-      console.log("manaher?", roleQueryData[0]["Count(*)"] );
-    if (roleQueryData[0]["Count(*)"] == 0){
+      console.log("manaher?", roleQueryData[0]['count'] );
+    if (roleQueryData[0]['count'] == 0){
       // not a manager
       query2 = query_projects_leading;
     } else { // maybe a leader
