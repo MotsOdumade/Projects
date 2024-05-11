@@ -264,7 +264,7 @@ async function task_status_breakdown_request(targetId){
       
       
       console.log("num_projects has waited for sql query and got back this many rows", queryData1.length);
-    return {'title': title, 'sampleData': sampleData};
+    
   } catch (error) {
     console.error('Error executing SQL query:', error);
     // Handle the error here
