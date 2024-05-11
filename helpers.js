@@ -252,7 +252,7 @@ async function member_projects_request(targetId){
 try {
     // query the database
     let roleQueryData = await execute_sql_query(roleQuery);
-      console.log("manaher?", roleQueryData);
+      console.log("manaher?", roleQueryData[0]["Count(*)"] );
     if (roleQueryData[0]["Count(*)"] == 0){
       // not a manager
       query2 = query_projects_leading;
