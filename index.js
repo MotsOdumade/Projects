@@ -71,7 +71,7 @@ app.get('/v1.1/data-analytics/project-analytics', (req, res) => {
       // they're authorised - carry out the request
       switch (dataRequested) {
             case "task-status-breakdown":
-                  // a pie chart showing proportion of current tasks that are in progress, not started or completed
+                  // a bar chart showing proportion of current tasks that are in progress, not started or completed
                   task_status_breakdown_request(targetId)
                       .then(taskStatusObj => {
                           responseObj['suggested-title'] = taskStatusObj['title'];
