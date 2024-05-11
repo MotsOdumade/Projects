@@ -114,7 +114,7 @@ function data_to_chart(data_requested){
 function project_completeness_breakdown_request(dataAbout, targetId, when){
   const title = 'Breakdown of the Complete and Incomplete Tasks';
   let sampleData = {
-    'whole-project': {'deadline': 'idk the date format', 'completed-tasks': 10, 'incomplete-tasks': 4, 'percentage-complete': 71.4},
+    'whole-project': {'deadline': '', 'completed-tasks': 10, 'incomplete-tasks': 4, 'percentage-complete': 71.4},
     'employee-breakdown': [{'name': 'John', 'completed-tasks': 4, 'incomplete-tasks': 1, 'percentage-complete': 80.0},
                           {'name': 'Jane', 'completed-tasks': 3, 'incomplete-tasks': 0, 'percentage-complete': 100.0},
                           {'name': 'Jen', 'completed-tasks': 2, 'incomplete-tasks': 2, 'percentage-complete': 50.0},
@@ -140,12 +140,16 @@ function deadlines_met_last_7_days_request(dataAbout, targetId, when){
   return {'title': title, 'sampleData': sampleData};
 }
 
-function task_status_breakdown_request(dataAbout, targetId, when){
+async function task_status_breakdown_request(targetId){
   const title = 'Breakdown of Task Progress Status';
-  
+  const membersQuery = `select user_id, project_id, first_name from project_team_member inner join user on project_team_member.user_id = user.id where project_team_member.project_id = $[targetId];`;
   let sampleData = {
-        labels: ['Whole Project', 'Employee 1', 'Employee 2', 'Employee 3'], // Example employee names
+        labels: ['Whole Project'], // Example employee names
         datasets: [{
+          label: 'Not Started',
+          backgroundColor: 'rgba(255, 174, 71, 0.5)',
+          data: [25, 2, 0, 1] // Example number of completed tasks for each entity
+        },{
           label: 'In Progress Tasks',
           backgroundColor: 'rgba(54, 162, 235, 0.5)',
           data: [10, 5, 8, 6] // Example number of in-progress tasks for each entity
@@ -153,12 +157,114 @@ function task_status_breakdown_request(dataAbout, targetId, when){
           label: 'Completed Tasks',
           backgroundColor: 'rgba(75, 192, 192, 0.5)',
           data: [20, 10, 15, 12] // Example number of completed tasks for each entity
-        }, {
-          label: 'Not Started',
-          backgroundColor: 'rgba(255, 174, 71, 0.5)',
-          data: [25, 2, 0, 1] // Example number of completed tasks for each entity
         }]
 };
+
+  try {
+    // query the database
+    let queryData1 = await execute_sql_query(membersQuery);
+    let userIds = [];
+    let query_not_started = `SELECT COUNT(*) AS Tasks
+      FROM task 
+      LEFT JOIN task_start ON task.id = task_start.task_id 
+      WHERE task_start.task_id IS NULL AND task.deadline > STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s') AND task.project_id =${targetId}`;
+    let query_in_progress = `SELECT COUNT(*) AS Tasks
+      FROM task 
+      INNER JOIN task_start ON task.id = task_start.task_id 
+      LEFT JOIN task_complete ON task.id = task_complete.task_id   
+      WHERE task_complete.task_id IS NULL AND task.deadline > STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s') AND task.project_id =${targetId}`;
+    let query_completed = `SELECT COUNT(*) AS Tasks
+      FROM task 
+      INNER JOIN task_complete ON task.id = task_complete.task_id 
+      WHERE task.deadline > STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s') AND task.project_id = ${targetId}`;
+        
+      for (let i = 0; i < queryData1.length; i++){
+            sampleData['labels'].push(queryData1[i]["first_name"]);
+            userIds.push(queryData1[i]["user_id"]);
+      }
+      // query tasks not started for each user within that project
+      for (let i = 0; i < userIds.length; i++){
+            let extraQuery1 = `UNION SELECT COUNT(*) 
+                  FROM task 
+                  LEFT JOIN task_start ON task.id = task_start.task_id 
+                  WHERE task_start.task_id IS NULL 
+                  AND task.deadline > STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s') 
+                  AND task.project_id =${targetId} 
+                  AND assigned_user_id = ${userIds[i]}`;
+            query_not_started += extraQuery1;
+            extraQuery2 = `UNION SELECT COUNT(*) 
+                  FROM task 
+                  INNER JOIN task_start 
+                  ON task.id = task_start.task_id 
+                  LEFT JOIN task_complete 
+                  ON task.id = task_complete.task_id   
+                  WHERE task_complete.task_id IS 
+                  NULL AND task.deadline > STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s') 
+                  AND task.project_id =${targetId} 
+                  AND assigned_user_id = ${userIds[i]}`;
+            query_in_progress += extraQuery2;
+            extraQuery3 = `UNION SELECT COUNT(*) 
+                  FROM task 
+                  INNER JOIN task_complete 
+                  ON task.id = task_complete.task_id 
+                  WHERE task.deadline > STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s') 
+                  AND task.project_id = ${targetId} 
+                  AND assigned_user_id = ${userIds[i]}`;
+            query_completed += extraQuery3;
+      }
+      query_not_started += ";";
+      query_in_progress += ";";
+      query_completed += ";";
+        
+      // execute the queries
+        
+      try { // not started
+          // query the database
+          let queryData2 = await execute_sql_query(query_not_started);
+          console.log("task_weight_breakdown_request has waited for sql query and got back this many rows", queryData2.length);
+            
+          try { // in progress
+                // query the database
+                let queryData3 = await execute_sql_query(query_in_progress);
+                console.log("task_weight_breakdown_request has waited for sql query and got back this many rows", queryData3.length);
+                
+                try { // completed
+                      // query the database
+                      let queryData4 = await execute_sql_query(query_completed);
+                      console.log("task_weight_breakdown_request has waited for sql query and got back this many rows", queryData4.length);
+                      // process the results
+                      for (int i = 0; i < queryData2.length; i++){
+                            sampleData['datasets'][0]['data'].push(queryData2[i]["Tasks"]);
+                      }
+                      for (int i = 0; i < queryData3.length; i++){
+                            sampleData['datasets'][1]['data'].push(queryData3[i]["Tasks"]);
+                      }
+                      for (int i = 0; i < queryData4.length; i++){
+                            sampleData['datasets'][2]['data'].push(queryData4[i]["Tasks"]);
+                      }
+                      
+                      return {'title': title, 'sampleData': sampleData};
+                  } catch (error) {
+                      console.error('Error executing SQL query:', error);
+                      // Handle the error here
+                  }
+            } catch (error) {
+                console.error('Error executing SQL query:', error);
+                // Handle the error here
+            }
+
+      } catch (error) {
+          console.error('Error executing SQL query:', error);
+          // Handle the error here
+      }
+      
+      
+      console.log("num_projects has waited for sql query and got back this many rows", queryData1.length);
+    return {'title': title, 'sampleData': sampleData};
+  } catch (error) {
+    console.error('Error executing SQL query:', error);
+    // Handle the error here
+  }
   return {'title': title, 'sampleData': sampleData};
 }
 
