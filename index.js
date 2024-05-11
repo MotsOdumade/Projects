@@ -100,10 +100,18 @@ app.get('/v1.1/data-analytics/project-analytics', (req, res) => {
                   break;
             case "member-projects":
                   // a line chart showing the (weighted) task completion over time (by week)
-                  const memberProjectsObj = member_projects_request(targetId);
-                  responseObj['suggested-title'] = memberProjectsObj['title'];
-                  responseObj['analytics-data'] = memberProjectsObj['sampleData'];
-                  return res.json(responseObj);
+                  member_projects_request(targetId)
+                      .then(memberProjectsObj => {
+                          responseObj['suggested-title'] = memberProjectsObj['title'];
+                          responseObj['analytics-data'] = memberProjectsObj['sampleData'];
+                          res.json(responseObj);
+                      })
+                      .catch(error => {
+                          console.error('Error fetching task status breakdown:', error);
+                          // Handle the error here
+                          res.status(500).json({ error: 'Internal server error' });
+                      });
+                 
                   break;
         
   
