@@ -185,7 +185,7 @@ async function task_status_breakdown_request(targetId){
       }
       // query tasks not started for each user within that project
       for (let i = 0; i < userIds.length; i++){
-            let extraQuery1 = `UNION SELECT COUNT(*) 
+            let extraQuery1 = ` UNION SELECT COUNT(*) 
                   FROM task 
                   LEFT JOIN task_start ON task.id = task_start.task_id 
                   WHERE task_start.task_id IS NULL 
@@ -193,7 +193,7 @@ async function task_status_breakdown_request(targetId){
                   AND task.project_id =${targetId} 
                   AND assigned_user_id = ${userIds[i]}`;
             query_not_started += extraQuery1;
-            extraQuery2 = `UNION SELECT COUNT(*) 
+            extraQuery2 = ` UNION SELECT COUNT(*) 
                   FROM task 
                   INNER JOIN task_start 
                   ON task.id = task_start.task_id 
@@ -204,7 +204,7 @@ async function task_status_breakdown_request(targetId){
                   AND task.project_id =${targetId} 
                   AND assigned_user_id = ${userIds[i]}`;
             query_in_progress += extraQuery2;
-            extraQuery3 = `UNION SELECT COUNT(*) 
+            extraQuery3 = ` UNION SELECT COUNT(*) 
                   FROM task 
                   INNER JOIN task_complete 
                   ON task.id = task_complete.task_id 
