@@ -221,9 +221,9 @@ async function task_status_breakdown_request(targetId) {
     let queryData2 = await execute_sql_query(query_not_started);
     let queryData3 = await execute_sql_query(query_in_progress);
     let queryData4 = await execute_sql_query(query_completed);
-    console.log(`${queryData2.length} = length of queryData2: `, queryData2);
-    console.log(`${queryData3.length} = length of queryData3: `, queryData3);
-    console.log(`${queryData4.length} = length of queryData4: `, queryData4);
+    console.log(`${queryData2.length} = length of queryData2: `, query_not_started);
+    console.log(`${queryData3.length} = length of queryData3: `, query_in_progress);
+    console.log(`${queryData4.length} = length of queryData4: `, query_completed);
     for (let i = 0; i < queryData2.length; i++) {
       sampleData['datasets'][0]['data'].push(queryData2[i]["Tasks"]);
     }
