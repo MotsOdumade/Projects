@@ -16,48 +16,45 @@ const listDataAbout = ['project', 'avg-project'];
 const mysql = require('mysql');
 require('dotenv').config();
 
-function execute_sql_query(sql_query){
-  // Create a connection to the database using environment variables
-    const connection = mysql.createConnection({
-        host: process.env.DB_HOST,
-        user: process.env.DB_USERNAME,
-        password: process.env.DB_PASSWORD,
-        database: process.env.DB_DATABASE
-    });
+function execute_sql_query(sql_query) {
+    return new Promise((resolve, reject) => {
+        // Create a connection to the database using environment variables
+        const connection = mysql.createConnection({
+            host: process.env.DB_HOST,
+            user: process.env.DB_USERNAME,
+            password: process.env.DB_PASSWORD,
+            database: process.env.DB_DATABASE
+        });
 
-    // Connect to the database
-    connection.connect((err) => {
-        if (err) {
-            console.error('Error connecting to the database:', err);
-            return false; // handle error appropriately
-        }
-        // Execute a query
-        console.log('Connected to the database');
-        connection.query(sql_query, (err, results) => {
+        // Connect to the database
+        connection.connect((err) => {
             if (err) {
-                console.error('Error executing query:', err);
-                connection.end(); // Close the connection if there's an error
-                return false; 
+                console.error('Error connecting to the database:', err);
+                reject(err);
+                return;
             }
-            // access result
-              
-            // Map each row to a plain JavaScript object
-            const formattedResults = results.map(row => {
-                  
-                const formattedRow = {};
-                for (const key in row) {
-                  formattedRow[key] = row[key];
+            // Execute a query
+            console.log('Connected to the database');
+            connection.query(sql_query, (err, results) => {
+                // Close the connection
+                connection.end();
+                if (err) {
+                    console.error('Error executing query:', err);
+                    reject(err);
+                    return;
                 }
-                return formattedRow;
-              });
-
-            // Log the formatted results
-              console.log(formattedResults);
-
-              // Close the connection
-              connection.end();
-              return formattedResults;
+                // Map each row to a plain JavaScript object
+                const formattedResults = results.map(row => {
+                    const formattedRow = {};
+                    for (const key in row) {
+                        formattedRow[key] = row[key];
+                    }
+                    return formattedRow;
+                });
+                // Resolve the promise with the formatted results
+                resolve(formattedResults);
             });
+        });
     });
 }
 
