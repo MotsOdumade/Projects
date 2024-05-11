@@ -243,21 +243,12 @@ async function task_status_breakdown_request(targetId) {
 async function member_projects_request(targetId){
   // returns a list of objects representing the projects that the individual is currently in
   const title = 'Projects Involved In';
-  let sampleData = [];
+  let sampleData;
   // query the database
   let query_all_projects = `SELECT name as 'project-name', id as 'project-id' FROM project;`;
   let query_projects_leading = `SELECT name as 'project-name', id as 'project-id' FROM project WHERE 'lead_id = ${targetId};`;
-  let roleQuery = `SELECT COUNT(*) AS is_manager FROM user WHERE LIKE "Manager" AND id = ${targetId};`; 
+  let roleQuery = `SELECT COUNT(*) FROM user WHERE role LIKE "Manager" AND id = ${targetId};`; 
   let query2;
-  sampleData = [
-    {'project-id': '1201', 'project-name': 'Skill Swap Initiative'},
-    {'project-id': '1205', 'project-name': 'Office Connect Project'},
-    {'project-id': '1202', 'project-name': 'Corporate Social Responsibility Campaign'},
-    {'project-id': '1204', 'project-name': 'Employee Training and Development Initiative'},
-    {'project-id': '1209', 'project-name': 'Customer Experience Enhancement Project'},
-    {'project-id': '1207', 'project-name': 'Performance Management System Upgrade'},
-    {'project-id': '1200', 'project-name': 'Risk Management and Compliance Review'},
-  ];
 try {
     // query the database
     let roleQueryData = await execute_sql_query(roleQuery);
