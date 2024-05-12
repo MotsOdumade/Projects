@@ -280,23 +280,10 @@ try {
   return {'title': title, 'sampleData': sampleData};
 }
 
-async function performance_metric_request(targetId) {
+async function performance_metric_request(targetId, myId) {
   const title = 'Breakdown of Performance';
-  const sql_query = `SELECT main_query.*, extra_query.total_weight_for_user 
-        FROM ( SELECT SUM(weight) AS total_weight, project_id, COUNT(DISTINCT assigned_user_id) AS num_users 
-        FROM task_complete 
-        INNER JOIN task 
-        ON task_complete.task_id = task.id 
-        WHERE complete_date > DATE_SUB(STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s'), INTERVAL 1 WEEK) 
-        GROUP BY project_id HAVING COUNT(CASE WHEN assigned_user_id = ${targetId} THEN 1 END) > 0 ) 
-        AS main_query 
-        LEFT JOIN ( SELECT project_id, SUM(weight) AS total_weight_for_user 
-        FROM task_complete INNER JOIN task 
-        ON task_complete.task_id = task.id 
-        WHERE task.assigned_user_id = ${targetId} 
-        AND complete_date > DATE_SUB(STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s'), INTERVAL 1 WEEK) 
-        GROUP BY project_id ) AS extra_query 
-        ON main_query.project_id = extra_query.project_id;`;
+  let sql_query_1 = `SELECT AVG(t.weight) AS average_weight, t.project_id   FROM task_complete tc   INNER JOIN task t ON tc.task_id = t.id   WHERE t.project_id = ${targetId}
+and complete_date > DATE_SUB(STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s'), INTERVAL 1 WEEK);`;
   let outputData = {};
   let sampleData = {
     labels: ['Total Weight of Tasks Completed'],
@@ -312,14 +299,13 @@ async function performance_metric_request(targetId) {
   };
   try {
 
-    let queryData = await execute_sql_query(sql_query);
+    let queryData = await execute_sql_query(sql_query_1);
     for (let i = 0; i < queryData.length; i++){
-          let newData = sampleData;
-          newData["datasets"][0]["data"].push(Number((queryData[i]["total_weight"] / queryData[i]["num_users"]).toFixed(1)));
-          newData["datasets"][1]["data"].push(queryData[i]["total_weight_for_user"]);
+          let newData1 = sampleData;
+          newData["datasets"][0]["data"].push(queryData[0][average_weight]);
           outputData[queryData[i]["project_id"]] = newData;
     }
-    
+ 
     return {'title': title, 'sampleData': outputData};
   } catch (error) {
     console.error('Error executing SQL query:', error);
