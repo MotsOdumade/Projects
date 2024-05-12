@@ -242,7 +242,7 @@ async function task_status_breakdown_request(targetId) {
 
 async function member_projects_request(targetId){
   // returns a list of objects representing the projects that the individual is currently in
-  const title = 'Projects Involved In';
+  const title = 'Projects Leading';
   let sampleData;
   // query the database
   let query_all_projects = `SELECT name as 'project-name', id as 'project-id' FROM project;`;
