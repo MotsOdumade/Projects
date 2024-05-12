@@ -315,7 +315,7 @@ async function performance_metric_request(targetId) {
     let queryData = await execute_sql_query(sql_query);
     for (let i = 0; i < queryData.length; i++){
           let newData = sampleData;
-          newData["datasets"][0]["data"].push(queryData[i]["total_weight"] / queryData[i]["num_users"]);
+          newData["datasets"][0]["data"].push((queryData[i]["total_weight"] / queryData[i]["num_users"]).toFixed(1));
           newData["datasets"][1]["data"].push(queryData[i]["total_weight_for_user"]);
           outputData[queryData[i]["project_id"]] = newData;
     }
