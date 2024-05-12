@@ -6,8 +6,9 @@
 const dataChartDict = {
       'project-completeness-breakdown': 'speedometer',
       'deadlines-met-last-7-days': 'progress bar',
-      'task-status-breakdown': 'pie',
-      'member-projects': 'list'
+      'task-status-breakdown': 'bar',
+      'member-projects': 'list',
+      'performance-metric': 'bar'
 };
 
 const listDataAbout = ['project', 'avg-project'];
@@ -279,6 +280,106 @@ try {
   return {'title': title, 'sampleData': sampleData};
 }
 
+async function performance_metric_request(targetId) {
+  const title = 'Breakdown of Progress';
+  const membersQuery = `SELECT DISTINCT first_name, user.id 
+        FROM task 
+        INNER JOIN user 
+        ON task.assigned_user_id = user.id 
+        WHERE project_id = ${targetId};`;
+  let sampleData = {
+    labels: ['Whole Project'],
+    datasets: [{
+      label: 'Not Started',
+      backgroundColor: 'rgba(255, 174, 71, 0.5)',
+      data: []
+    },{
+      label: 'In Progress Tasks',
+      backgroundColor: 'rgba(54, 162, 235, 0.5)',
+      data: []
+    }, {
+      label: 'Completed Tasks',
+      backgroundColor: 'rgba(75, 192, 192, 0.5)',
+      data: []
+    }]
+  };
+  try {
+    let queryData1 = await execute_sql_query(membersQuery);
+    let userIds = [];
+    let query_not_started = `SELECT COUNT(*) AS Tasks
+      FROM task 
+      LEFT JOIN task_start ON task.id = task_start.task_id 
+      WHERE task_start.task_id IS NULL AND task.deadline > STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s') AND task.project_id =${targetId}`;
+    let query_in_progress = `SELECT COUNT(*) AS Tasks
+      FROM task 
+      INNER JOIN task_start ON task.id = task_start.task_id 
+      LEFT JOIN task_complete ON task.id = task_complete.task_id   
+      WHERE task_complete.task_id IS NULL AND task.deadline > STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s') AND task.project_id =${targetId}`;
+    let query_completed = `SELECT COUNT(*) AS Tasks
+      FROM task 
+      INNER JOIN task_complete ON task.id = task_complete.task_id 
+      WHERE task.deadline > STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s') AND task.project_id = ${targetId}`;
+
+    for (let i = 0; i < queryData1.length; i++) {
+      sampleData['labels'].push(queryData1[i]["first_name"]);
+      userIds.push(queryData1[i]["id"]);
+    }
+      
+
+    for (let i = 0; i < userIds.length; i++) {
+      let extraQuery1 = ` UNION ALL SELECT COUNT(*) 
+            FROM task 
+            LEFT JOIN task_start ON task.id = task_start.task_id 
+            WHERE task_start.task_id IS NULL 
+            AND task.deadline > STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s') 
+            AND task.project_id =${targetId} 
+            AND assigned_user_id = ${userIds[i]}`;
+      query_not_started += extraQuery1;
+      let extraQuery2 = ` UNION ALL SELECT COUNT(*) 
+            FROM task 
+            INNER JOIN task_start 
+            ON task.id = task_start.task_id 
+            LEFT JOIN task_complete 
+            ON task.id = task_complete.task_id   
+            WHERE task_complete.task_id IS 
+            NULL AND task.deadline > STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s') 
+            AND task.project_id =${targetId} 
+            AND assigned_user_id = ${userIds[i]}`;
+      query_in_progress += extraQuery2;
+      let extraQuery3 = ` UNION ALL SELECT COUNT(*) 
+            FROM task 
+            INNER JOIN task_complete 
+            ON task.id = task_complete.task_id 
+            WHERE task.deadline > STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s') 
+            AND task.project_id = ${targetId} 
+            AND assigned_user_id = ${userIds[i]}`;
+      query_completed += extraQuery3;
+    }
+
+    query_not_started += ";";
+    query_in_progress += ";";
+    query_completed += ";";
+
+    let queryData2 = await execute_sql_query(query_not_started);
+    let queryData3 = await execute_sql_query(query_in_progress);
+    let queryData4 = await execute_sql_query(query_completed);
+    
+    for (let i = 0; i < queryData2.length; i++) {
+      sampleData['datasets'][0]['data'].push(queryData2[i]["Tasks"]);
+    }
+    for (let i = 0; i < queryData3.length; i++) {
+      sampleData['datasets'][1]['data'].push(queryData3[i]["Tasks"]);
+    }
+    for (let i = 0; i < queryData4.length; i++) {
+      sampleData['datasets'][2]['data'].push(queryData4[i]["Tasks"]);
+    }
+
+    return {'title': title, 'sampleData': sampleData};
+  } catch (error) {
+    console.error('Error executing SQL query:', error);
+    return { error: 'Internal server error' };
+  }
+}
 
 module.exports = {valid_request,
                   authorised,
@@ -286,4 +387,5 @@ module.exports = {valid_request,
                   project_completeness_breakdown_request,
                   deadlines_met_last_7_days_request,
                   task_status_breakdown_request,
-                  member_projects_request};
+                  member_projects_request, 
+                 performance_metric_request};
