@@ -32,6 +32,7 @@ app.get('/v1.1/data-analytics/project-analytics', (req, res) => {
         const accessCode = (req.query['access-code'] || '').trim().replace(/<[^>]*>/g, '');
         const dataAbout = (req.query['data-about'] || '').trim().replace(/<[^>]*>/g, '');
         const targetId = (req.query['target-id'] || '').trim().replace(/<[^>]*>/g, '');
+        const myId = (req.query['my-id'] || '').trim().replace(/<[^>]*>/g, '');
         const when = (req.query.when || '').trim().replace(/<[^>]*>/g, '');
 
       // prepare the response object
@@ -116,7 +117,7 @@ app.get('/v1.1/data-analytics/project-analytics', (req, res) => {
                   break;
             case "performance-metric":
                   // a bar chart showing proportion of current tasks that are in progress, not started or completed
-                  performance_metric_request(targetId)
+                  performance_metric_request(targetId, myId)
                       .then(performanceMetricObj => {
                           responseObj['suggested-title'] = performanceMetricObj['title'];
                           responseObj['analytics-data'] = performanceMetricObj['sampleData'];
