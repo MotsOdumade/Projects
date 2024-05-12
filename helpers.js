@@ -280,10 +280,14 @@ try {
   return {'title': title, 'sampleData': sampleData};
 }
 
-async function performance_metric_request(targetId, myId) {
+async function performance_metric_request(targetId) {
   const title = 'Breakdown of Performance';
-  let sql_query_1 = `SELECT AVG(t.weight) AS average_weight, t.project_id   FROM task_complete tc   INNER JOIN task t ON tc.task_id = t.id   WHERE t.project_id = ${targetId}
-and complete_date > DATE_SUB(STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s'), INTERVAL 1 WEEK);`;
+  let projects_query = `SELECT p.id, p.name 
+      FROM project_team_member ptm 
+      JOIN project p ON ptm.project_id = p.id 
+      WHERE ptm.user_id = ${targetId}`;
+  let sql_query_2 = ``;
+  let sql_query_3 = ``;
   let outputData = {};
   let sampleData = {
     labels: ['Total Weight of Tasks Completed'],
@@ -298,19 +302,62 @@ and complete_date > DATE_SUB(STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:
     }]
   };
   try {
+        projQueryData = await execute_sql_query(projects_query);
+        if (projQueryData.length > 0){
+              sql_query_2 += `SELECT AVG(t.weight) AS average_weight, t.project_id   
+              FROM task_complete tc   
+              INNER JOIN task t ON tc.task_id = t.id   
+              WHERE t.project_id = ${projQueryData[0]["id"]}
+              AND complete_date > DATE_SUB(STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s'), INTERVAL 1 WEEK)`;
+              sql_query_3 += `SELECT AVG(t.weight) AS average_weight, t.project_id   
+              FROM task_complete tc   
+              INNER JOIN task t ON tc.task_id = t.id   
+              WHERE t.project_id = ${projQueryData[0]["id"]}
+              AND complete_date > DATE_SUB(STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s'), INTERVAL 1 WEEK) 
+              AND t.assigned_user_id = ${targetId}`;
+        
+              for (let j = 1; j < projQueryData.length; j++){
+                    sql_query_2 += `UNION ALL SELECT AVG(t.weight) 
+                    AS average_weight, t.project_id   
+                    FROM task_complete tc   
+                    INNER JOIN task t ON tc.task_id = t.id   
+                    WHERE t.project_id = ${projQueryData[j]["id"]}
+                    AND complete_date > DATE_SUB(STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s'), INTERVAL 1 WEEK)`;
+                    sql_query_3 += `UNION ALL SELECT AVG(t.weight) 
+                    AS average_weight, t.project_id   
+                    FROM task_complete tc   
+                    INNER JOIN task t ON tc.task_id = t.id   
+                    WHERE t.project_id = ${projQueryData[j]["id"]}
+                    AND complete_date > DATE_SUB(STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s'), INTERVAL 1 WEEK) 
+                    AND t.assigned_user_id = ${targetId}`;
+              }
 
-    let queryData = await execute_sql_query(sql_query_1);
-    for (let i = 0; i < queryData.length; i++){
-          let newData1 = sampleData;
-          newData["datasets"][0]["data"].push(queryData[0][average_weight]);
-          outputData[queryData[i]["project_id"]] = newData;
-    }
- 
-    return {'title': title, 'sampleData': outputData};
-  } catch (error) {
-    console.error('Error executing SQL query:', error);
-    return { error: 'Internal server error' };
-  }
+        }
+        sql_query_2 += ";";
+        sql_query_3 += ";";
+        try {
+            
+                let queryData2 = await execute_sql_query(sql_query_2);
+              
+                let queryData3 = await execute_sql_query(sql_query_3);
+                for (let i = 0; i < queryData2.length; i++){
+                      let newData = sampleData;
+                      newData["datasets"][0]["data"].push(queryData2[0][average_weight]);
+                      newData["datasets"][1]["data"].push(queryData3[0][average_weight]);
+                      outputData[queryData2[i]["project_id"]] = newData;
+                }
+                 return {'title': title, 'sampleData': outputData};
+                   
+                
+              } catch (error) {
+                console.error('Error executing SQL query:', error);
+                return { error: 'Internal server error' };
+              }
+  } catch (error) {console.error('Error executing SQL query:', error);
+    return { error: 'Internal server error' };}
+
+      
+  
 }
 
 module.exports = {valid_request,
