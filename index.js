@@ -7,7 +7,8 @@ const {
       project_completeness_breakdown_request,
       deadlines_met_last_7_days_request,
       task_status_breakdown_request,
-      member_projects_request
+      member_projects_request,
+      performance_metric_request
       
 } = require('./helpers');
 
@@ -113,7 +114,20 @@ app.get('/v1.1/data-analytics/project-analytics', (req, res) => {
                       });
                  
                   break;
-        
+            case "performance-metric":
+                  // a bar chart showing proportion of current tasks that are in progress, not started or completed
+                  performance_metric_request(targetId)
+                      .then(performanceMetricObj => {
+                          responseObj['suggested-title'] = performanceMetricObj['title'];
+                          responseObj['analytics-data'] = performanceMetricObj['sampleData'];
+                          res.json(responseObj);
+                      })
+                      .catch(error => {
+                          console.error('Error fetching performance metric:', error);
+                          // Handle the error here
+                          res.status(500).json({ error: 'Internal server error' });
+                      });
+                  break;
   
         default:
                   // indicates a request option that hasn't yet been implemented
