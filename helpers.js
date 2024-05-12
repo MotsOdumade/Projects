@@ -281,100 +281,46 @@ try {
 }
 
 async function performance_metric_request(targetId) {
-  const title = 'Breakdown of Progress';
-  const membersQuery = `SELECT DISTINCT first_name, user.id 
-        FROM task 
-        INNER JOIN user 
-        ON task.assigned_user_id = user.id 
-        WHERE project_id = ${targetId};`;
+  const title = 'Breakdown of Performance';
+  const sql_query = `SELECT main_query.*, extra_query.total_weight_for_user 
+        FROM ( SELECT SUM(weight) AS total_weight, project_id, COUNT(DISTINCT assigned_user_id) AS num_users 
+        FROM task_complete 
+        INNER JOIN task 
+        ON task_complete.task_id = task.id 
+        WHERE complete_date > DATE_SUB(STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s'), INTERVAL 1 WEEK) 
+        GROUP BY project_id HAVING COUNT(CASE WHEN assigned_user_id = ${targetId} THEN 1 END) > 0 ) 
+        AS main_query 
+        LEFT JOIN ( SELECT project_id, SUM(weight) AS total_weight_for_user 
+        FROM task_complete INNER JOIN task 
+        ON task_complete.task_id = task.id 
+        WHERE task.assigned_user_id = ${targetId} 
+        AND complete_date > DATE_SUB(STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s'), INTERVAL 1 WEEK) 
+        GROUP BY project_id ) AS extra_query 
+        ON main_query.project_id = extra_query.project_id;`;
+  let outputData = {};
   let sampleData = {
-    labels: ['Whole Project'],
+    labels: ['Total Weight of Tasks Completed'],
     datasets: [{
-      label: 'Not Started',
+      label: 'Average Project Member',
       backgroundColor: 'rgba(255, 174, 71, 0.5)',
       data: []
     },{
-      label: 'In Progress Tasks',
+      label: 'Current User',
       backgroundColor: 'rgba(54, 162, 235, 0.5)',
-      data: []
-    }, {
-      label: 'Completed Tasks',
-      backgroundColor: 'rgba(75, 192, 192, 0.5)',
       data: []
     }]
   };
   try {
-    let queryData1 = await execute_sql_query(membersQuery);
-    let userIds = [];
-    let query_not_started = `SELECT COUNT(*) AS Tasks
-      FROM task 
-      LEFT JOIN task_start ON task.id = task_start.task_id 
-      WHERE task_start.task_id IS NULL AND task.deadline > STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s') AND task.project_id =${targetId}`;
-    let query_in_progress = `SELECT COUNT(*) AS Tasks
-      FROM task 
-      INNER JOIN task_start ON task.id = task_start.task_id 
-      LEFT JOIN task_complete ON task.id = task_complete.task_id   
-      WHERE task_complete.task_id IS NULL AND task.deadline > STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s') AND task.project_id =${targetId}`;
-    let query_completed = `SELECT COUNT(*) AS Tasks
-      FROM task 
-      INNER JOIN task_complete ON task.id = task_complete.task_id 
-      WHERE task.deadline > STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s') AND task.project_id = ${targetId}`;
 
-    for (let i = 0; i < queryData1.length; i++) {
-      sampleData['labels'].push(queryData1[i]["first_name"]);
-      userIds.push(queryData1[i]["id"]);
+    let queryData = await execute_sql_query(sql_query);
+    for (let i = 0; i < queryData.length; i++){
+          let newData = sampleData;
+          newData["datasets"][0]["data"].push(queryData[i]["total_weight"] / queryData[i]["num_users"]);
+          newData["datasets"][1]["data"].push(queryData[i]["total_weight_for_user"]);
+          outputData[queryData[i]["project_id"]] = newData;
     }
-      
-
-    for (let i = 0; i < userIds.length; i++) {
-      let extraQuery1 = ` UNION ALL SELECT COUNT(*) 
-            FROM task 
-            LEFT JOIN task_start ON task.id = task_start.task_id 
-            WHERE task_start.task_id IS NULL 
-            AND task.deadline > STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s') 
-            AND task.project_id =${targetId} 
-            AND assigned_user_id = ${userIds[i]}`;
-      query_not_started += extraQuery1;
-      let extraQuery2 = ` UNION ALL SELECT COUNT(*) 
-            FROM task 
-            INNER JOIN task_start 
-            ON task.id = task_start.task_id 
-            LEFT JOIN task_complete 
-            ON task.id = task_complete.task_id   
-            WHERE task_complete.task_id IS 
-            NULL AND task.deadline > STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s') 
-            AND task.project_id =${targetId} 
-            AND assigned_user_id = ${userIds[i]}`;
-      query_in_progress += extraQuery2;
-      let extraQuery3 = ` UNION ALL SELECT COUNT(*) 
-            FROM task 
-            INNER JOIN task_complete 
-            ON task.id = task_complete.task_id 
-            WHERE task.deadline > STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s') 
-            AND task.project_id = ${targetId} 
-            AND assigned_user_id = ${userIds[i]}`;
-      query_completed += extraQuery3;
-    }
-
-    query_not_started += ";";
-    query_in_progress += ";";
-    query_completed += ";";
-
-    let queryData2 = await execute_sql_query(query_not_started);
-    let queryData3 = await execute_sql_query(query_in_progress);
-    let queryData4 = await execute_sql_query(query_completed);
     
-    for (let i = 0; i < queryData2.length; i++) {
-      sampleData['datasets'][0]['data'].push(queryData2[i]["Tasks"]);
-    }
-    for (let i = 0; i < queryData3.length; i++) {
-      sampleData['datasets'][1]['data'].push(queryData3[i]["Tasks"]);
-    }
-    for (let i = 0; i < queryData4.length; i++) {
-      sampleData['datasets'][2]['data'].push(queryData4[i]["Tasks"]);
-    }
-
-    return {'title': title, 'sampleData': sampleData};
+    return {'title': title, 'sampleData': outputData};
   } catch (error) {
     console.error('Error executing SQL query:', error);
     return { error: 'Internal server error' };
