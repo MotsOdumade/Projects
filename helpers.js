@@ -337,6 +337,7 @@ async function performance_metric_request(targetId) {
         sql_query_2 += ";";
         sql_query_3 += ";";
         */
+        }
         console.log(sql_query_2, sql_query_3);
         try {
             
