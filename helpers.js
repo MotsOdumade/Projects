@@ -304,12 +304,12 @@ async function performance_metric_request(targetId) {
   try {
         projQueryData = await execute_sql_query(projects_query);
         if (projQueryData.length > 0){
-              sql_query_2 += `SELECT AVG(t.weight) AS average_weight, t.project_id   
+              sql_query_2 += `SELECT SUM(t.weight) AS average_weight, t.project_id   
               FROM task_complete tc   
               INNER JOIN task t ON tc.task_id = t.id   
               WHERE t.project_id = ${projQueryData[0]["id"]}
               AND complete_date > DATE_SUB(STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s'), INTERVAL 1 WEEK)`;
-              sql_query_3 += `SELECT AVG(t.weight) AS average_weight, t.project_id   
+              sql_query_3 += `SELECT SUM(t.weight) AS average_weight, t.project_id   
               FROM task_complete tc   
               INNER JOIN task t ON tc.task_id = t.id   
               WHERE t.project_id = ${projQueryData[0]["id"]}
@@ -317,13 +317,13 @@ async function performance_metric_request(targetId) {
               AND t.assigned_user_id = ${targetId}`;
         
               for (let j = 1; j < projQueryData.length; j++){
-                    sql_query_2 += ` UNION ALL SELECT AVG(t.weight) 
+                    sql_query_2 += ` UNION ALL SELECT SUM(t.weight) 
                     AS average_weight, t.project_id   
                     FROM task_complete tc   
                     INNER JOIN task t ON tc.task_id = t.id   
                     WHERE t.project_id = ${projQueryData[j]["id"]}
                     AND complete_date > DATE_SUB(STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s'), INTERVAL 1 WEEK)`;
-                    sql_query_3 += ` UNION ALL SELECT AVG(t.weight) 
+                    sql_query_3 += ` UNION ALL SELECT SUM(t.weight) 
                     AS average_weight, t.project_id   
                     FROM task_complete tc   
                     INNER JOIN task t ON tc.task_id = t.id   
