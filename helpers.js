@@ -341,8 +341,9 @@ async function performance_metric_request(targetId) {
                 let queryData2 = await execute_sql_query(sql_query_2);
               
                 let queryData3 = await execute_sql_query(sql_query_3);
+              let newData = sampleData;
                 for (let i = 0; i < queryData2.length; i++){
-                      let newData = sampleData;
+                      newData = sampleData;
                       newData["datasets"][0]["data"].push(queryData2[i]["average_weight"]);
                       newData["datasets"][1]["data"].push(queryData3[i]["average_weight"]);
                       outputData[queryData2[i]["project_id"]] = newData;
