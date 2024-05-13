@@ -316,7 +316,7 @@ async function performance_metric_request(targetId) {
               WHERE t.project_id = ${projQueryData[0]["id"]}
               AND complete_date > DATE_SUB(STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s'), INTERVAL 1 WEEK) 
               AND t.assigned_user_id = ${targetId};`;
-        /*
+        
               for (let j = 1; j < projQueryData.length; j++){
                     sql_query_2 += ` UNION ALL SELECT SUM(t.weight) 
                     AS average_weight, t.project_id   
@@ -336,8 +336,8 @@ async function performance_metric_request(targetId) {
         }
         sql_query_2 += ";";
         sql_query_3 += ";";
-        */
-        }
+        
+        
         console.log(sql_query_2, sql_query_3);
         try {
             
@@ -347,8 +347,8 @@ async function performance_metric_request(targetId) {
               let newData = sampleData;
                 for (let i = 0; i < queryData2.length; i++){
                       newData = sampleData;
-                      newData["datasets"][0]["data"].push(queryData2[i]["average_weight"]);
-                      newData["datasets"][1]["data"].push(queryData3[i]["average_weight"]);
+                      newData["datasets"][i]["data"].push(queryData2[0]["average_weight"]);
+                      newData["datasets"][i]["data"].push(queryData3[0]["average_weight"]);
                       outputData[queryData2[i]["project_id"]] = newData;
                 }
                  return {'title': title, 'sampleData': outputData};
