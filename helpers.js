@@ -293,11 +293,11 @@ async function performance_metric_request(targetId) {
     labels: ['Total Weight of Tasks Completed'],
     datasets: [{
       label: 'Average Project Member',
-      backgroundColor: 'rgba(255, 174, 71, 0.5)',
+      backgroundColor: 'rgba(50, 168, 82, 0.5)',
       data: []
     },{
       label: 'Current User',
-      backgroundColor: 'rgba(54, 162, 235, 0.5)',
+      backgroundColor: 'rgba(240, 134, 196, 0.5)',
       data: []
     }]
   };
