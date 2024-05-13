@@ -340,7 +340,7 @@ async function performance_metric_request(targetId) {
         
         
         console.log("query 2 :", sql_query_2);
-        console.log("query 3 :", sql_query_2);
+        console.log("query 3 :", sql_query_3);
         try {
             
                 let queryData2 = await execute_sql_query(sql_query_2);
