@@ -297,7 +297,7 @@ async function performance_metric_request(targetId) {
       data: []
     },{
       label: 'Current User',
-      backgroundColor: 'rgba(240, 134, 196, 0.5)',
+      backgroundColor: 'rgba(240, 134, 134, 0.5)',
       data: []
     }]
   };
