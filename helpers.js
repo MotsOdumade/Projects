@@ -332,13 +332,15 @@ async function performance_metric_request(targetId) {
                     AND complete_date > DATE_SUB(STR_TO_DATE('2024-05-17 13:42:04', '%Y-%m-%d %H:%i:%s'), INTERVAL 1 WEEK) 
                     AND t.assigned_user_id = ${targetId}`;
               }
+             
 
         }
         sql_query_2 += ";";
         sql_query_3 += ";";
         
         
-        console.log(sql_query_2, sql_query_3);
+        console.log("query 2 :", sql_query_2);
+        console.log("query 3 :", sql_query_2);
         try {
             
                 let queryData2 = await execute_sql_query(sql_query_2);
