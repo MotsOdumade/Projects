@@ -976,5 +976,6 @@ module.exports = {valid_request,
                   project_completeness_breakdown_request,
                   deadlines_met_last_7_days_request,
                   task_status_breakdown_request,
-                  member_projects_request, 
+                  member_projects_request,
+                  sample_performance_metric,
                  performance_metric_request};
