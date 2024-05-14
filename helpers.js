@@ -540,7 +540,7 @@ function sample_performance_metric(targetId){
                               backgroundColor: 'rgba(240, 134, 134, 0.5)',
                               data: [0]
                             }]
-                          }v;
+                          };
                   outputData["3"]  = {
                             labels: ['Total Weight of Tasks Completed'],
                             datasets: [{
