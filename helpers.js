@@ -280,6 +280,609 @@ try {
   return {'title': title, 'sampleData': sampleData};
 }
 
+function sample_performance_metric(targetId){
+      const title = 'Breakdown of Performance';
+      let outputData = {};
+      switch (targetId){
+            case 1:
+                  outputData["1"]  = {
+                      labels: ['Total Weight of Tasks Completed'],
+                      datasets: [{
+                        label: 'Project Members',
+                        backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                        data: [11]
+                      },{
+                        label: 'Current User',
+                        backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                        data: [1]
+                      }]
+                    };
+                  outputData["2"]  = {
+                      labels: ['Total Weight of Tasks Completed'],
+                      datasets: [{
+                        label: 'Project Members',
+                        backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                        data: [6]
+                      },{
+                        label: 'Current User',
+                        backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                        data: [0]
+                      }]
+                    };
+                  outputData["3"]  = 
+                        {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [1]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [0]
+                            }]
+                          };
+                  outputData["4"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [18]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [6]
+                            }]
+                          };
+                  outputData["5"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [19]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [5]
+                            }]
+                          };
+
+                  break;
+            case 2:
+                  outputData["1"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [11]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [5]
+                            }]
+                          };
+                  outputData["4"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [18]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [0]
+                            }]
+                          };
+                  outputData["5"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [19]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [4]
+                            }]
+                          };
+                  outputData["6"]  = 
+                        {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [7]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [6]
+                            }]
+                          };
+
+                  break;
+            case 3:
+                  outputData["1"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [11]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [5]
+                            }]
+                          };
+                  outputData["6"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [7]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [0]
+                            }]
+                          };
+
+                  break;
+            case 4:
+                  outputData["1"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [11]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [0]
+                            }]
+                          };
+                  outputData["2"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [6]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [4]
+                            }]
+                          };
+                  outputData["4"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [18]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [6]
+                            }]
+                          };
+                  outputData["6"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [7]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [1]
+                            }]
+                          };
+
+                  break;
+            case 5:
+                  outputData["1"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [11]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [0]
+                            }]
+                          };
+                  outputData["2"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [6]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [2]
+                            }]
+                          };
+                  outputData["5"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [19]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [5]
+                            }]
+                          };
+                  outputData["6"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [7]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [0]
+                            }]
+                          };
+                  break;
+            case 6:
+                  outputData["2"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [6]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [0]
+                            }]
+                          }v;
+                  outputData["3"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [1]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [1]
+                            }]
+                          };
+                  outputData["4"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [18]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [6]
+                            }]
+                          };
+                  outputData["5"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [19]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [5]
+                            }]
+                          };
+
+                  break;
+            case 7:
+                  outputData["1"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [11]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [0]
+                            }]
+                          };
+                  outputData["5"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [19]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [0]
+                            }]
+                          };
+
+                  break;
+            case 8:
+                  outputData["1"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [11]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [0]
+                            }]
+                          };
+                  outputData["5"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [19]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [0]
+                            }]
+                          };
+
+                  break;
+            case 9:
+                  outputData["2"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [6]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [0]
+                            }]
+                          };
+                  
+                  break;
+            case 10:
+                  outputData["4"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [18]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [0]
+                            }]
+                          };
+                  outputData["6"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [7]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [0]
+                            }]
+                          };
+                  break;
+            case 11:
+                  outputData["2"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [6]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [0]
+                            }]
+                          };
+                  outputData["3"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [1]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [0]
+                            }]
+                          };
+                  outputData["6"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [7]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [0]
+                            }]
+                          };
+                  
+                  break;
+            case 12:
+                  outputData["4"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [18]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [0]
+                            }]
+                          };
+                  outputData["6"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [7]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [0]
+                            }]
+                          };
+                  
+                  break;
+            case 13;
+                  outputData["3"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [1]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [0]
+                            }]
+                          };
+                  outputData["4"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [18]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [0]
+                            }]
+                          };
+                  
+                  break;
+            case 14:
+                  outputData["3"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [1]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [0]
+                            }]
+                          };
+                  outputData["6"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [7]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [0]
+                            }]
+                          };
+
+                  break;
+            case 15:
+                  outputData["1"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [11]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [0]
+                            }]
+                          };
+                  outputData["2"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [7]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [6]
+                            }]
+                          };
+                  outputData["3"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [1]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [0]
+                            }]
+                          };
+                  outputData["4"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [18]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [0]
+                            }]
+                          };
+                  outputData["5"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [19]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [0]
+                            }]
+                          };
+                  outputData["6"]  = {
+                            labels: ['Total Weight of Tasks Completed'],
+                            datasets: [{
+                              label: 'Project Members',
+                              backgroundColor: 'rgba(54, 160, 201, 0.5)',
+                              data: [7]
+                            },{
+                              label: 'Current User',
+                              backgroundColor: 'rgba(240, 134, 134, 0.5)',
+                              data: [0]
+                            }]
+                          };
+                  break;
+            default:
+                  break;
+      }
+
+
+
+
+
+
+      
+      return {'title': title, 'sampleData': outputData};
+
+      
+}
+
 async function performance_metric_request(targetId) {
   const title = 'Breakdown of Performance';
   let projects_query = `SELECT p.id, p.name 
