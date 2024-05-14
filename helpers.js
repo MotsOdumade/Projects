@@ -346,7 +346,7 @@ function sample_performance_metric(targetId){
                               data: [5]
                             }]
                           };
-
+                   return {'title': title, 'sampleData': outputData};
                   break;
             case 2:
                   outputData["1"]  = {
@@ -398,7 +398,7 @@ function sample_performance_metric(targetId){
                               data: [6]
                             }]
                           };
-
+                   return {'title': title, 'sampleData': outputData};
                   break;
             case 3:
                   outputData["1"]  = {
@@ -425,7 +425,7 @@ function sample_performance_metric(targetId){
                               data: [0]
                             }]
                           };
-
+                   return {'title': title, 'sampleData': outputData};
                   break;
             case 4:
                   outputData["1"]  = {
@@ -476,7 +476,7 @@ function sample_performance_metric(targetId){
                               data: [1]
                             }]
                           };
-
+                   return {'title': title, 'sampleData': outputData};
                   break;
             case 5:
                   outputData["1"]  = {
@@ -527,6 +527,8 @@ function sample_performance_metric(targetId){
                               data: [0]
                             }]
                           };
+
+                   return {'title': title, 'sampleData': outputData};
                   break;
             case 6:
                   outputData["2"]  = {
@@ -577,7 +579,7 @@ function sample_performance_metric(targetId){
                               data: [5]
                             }]
                           };
-
+                   return {'title': title, 'sampleData': outputData};
                   break;
             case 7:
                   outputData["1"]  = {
@@ -604,7 +606,7 @@ function sample_performance_metric(targetId){
                               data: [0]
                             }]
                           };
-
+                   return {'title': title, 'sampleData': outputData};
                   break;
             case 8:
                   outputData["1"]  = {
@@ -631,7 +633,7 @@ function sample_performance_metric(targetId){
                               data: [0]
                             }]
                           };
-
+                   return {'title': title, 'sampleData': outputData};
                   break;
             case 9:
                   outputData["2"]  = {
@@ -646,7 +648,7 @@ function sample_performance_metric(targetId){
                               data: [0]
                             }]
                           };
-                  
+                   return {'title': title, 'sampleData': outputData};
                   break;
             case 10:
                   outputData["4"]  = {
@@ -673,6 +675,7 @@ function sample_performance_metric(targetId){
                               data: [0]
                             }]
                           };
+                   return {'title': title, 'sampleData': outputData};
                   break;
             case 11:
                   outputData["2"]  = {
@@ -711,7 +714,7 @@ function sample_performance_metric(targetId){
                               data: [0]
                             }]
                           };
-                  
+                   return {'title': title, 'sampleData': outputData};
                   break;
             case 12:
                   outputData["4"]  = {
@@ -738,7 +741,7 @@ function sample_performance_metric(targetId){
                               data: [0]
                             }]
                           };
-                  
+                   return {'title': title, 'sampleData': outputData};
                   break;
             case 13:
                   outputData["3"]  = {
@@ -765,7 +768,7 @@ function sample_performance_metric(targetId){
                               data: [0]
                             }]
                           };
-                  
+                   return {'title': title, 'sampleData': outputData};
                   break;
             case 14:
                   outputData["3"]  = {
@@ -792,7 +795,7 @@ function sample_performance_metric(targetId){
                               data: [0]
                             }]
                           };
-
+                   return {'title': title, 'sampleData': outputData};
                   break;
             case 15:
                   outputData["1"]  = {
@@ -867,8 +870,11 @@ function sample_performance_metric(targetId){
                               data: [0]
                             }]
                           };
+                   return {'title': title, 'sampleData': outputData};
                   break;
             default:
+                  console.log("none of the cases matched");
+                  return {'title': title, 'sampleData': outputData};
                   break;
       }
 
@@ -878,7 +884,7 @@ function sample_performance_metric(targetId){
 
 
       
-      return {'title': title, 'sampleData': outputData};
+     
 
       
 }
@@ -942,8 +948,8 @@ async function performance_metric_request(targetId) {
         sql_query_3 += ";";
         
         
-        console.log("query 2 :", sql_query_2);
-        console.log("query 3 :", sql_query_3);
+        //console.log("query 2 :", sql_query_2);
+        //console.log("query 3 :", sql_query_3);
         try {
             
                 let queryData2 = await execute_sql_query(sql_query_2);
