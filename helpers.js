@@ -740,7 +740,7 @@ function sample_performance_metric(targetId){
                           };
                   
                   break;
-            case 13;
+            case 13:
                   outputData["3"]  = {
                             labels: ['Total Weight of Tasks Completed'],
                             datasets: [{
