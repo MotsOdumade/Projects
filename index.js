@@ -118,7 +118,7 @@ app.get('/v1.1/data-analytics/project-analytics', (req, res) => {
                   break;
             case "performance-metric":
                   // a bar chart showing proportion of current tasks that are in progress, not started or completed
-                  const performanceMetricObj = performance_metric_request(targetId);
+                  const performanceMetricObj = sample_performance_metric(targetId);
                   responseObj['suggested-title'] = performanceMetricObj['title'];
                   responseObj['analytics-data'] = performanceMetricObj['sampleData'];
                   return res.json(responseObj);
