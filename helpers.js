@@ -284,7 +284,7 @@ function sample_performance_metric(targetId){
       const title = 'Breakdown of Performance';
       let outputData = {};
       switch (targetId){
-            case 1:
+            case "1":
                   outputData["1"]  = {
                       labels: ['Total Weight of Tasks Completed'],
                       datasets: [{
@@ -348,7 +348,7 @@ function sample_performance_metric(targetId){
                           };
                    return {'title': title, 'sampleData': outputData};
                   break;
-            case 2:
+            case "2":
                   outputData["1"]  = {
                             labels: ['Total Weight of Tasks Completed'],
                             datasets: [{
@@ -400,7 +400,7 @@ function sample_performance_metric(targetId){
                           };
                    return {'title': title, 'sampleData': outputData};
                   break;
-            case 3:
+            case "3":
                   outputData["1"]  = {
                             labels: ['Total Weight of Tasks Completed'],
                             datasets: [{
@@ -427,7 +427,7 @@ function sample_performance_metric(targetId){
                           };
                    return {'title': title, 'sampleData': outputData};
                   break;
-            case 4:
+            case "4":
                   outputData["1"]  = {
                             labels: ['Total Weight of Tasks Completed'],
                             datasets: [{
@@ -478,7 +478,7 @@ function sample_performance_metric(targetId){
                           };
                    return {'title': title, 'sampleData': outputData};
                   break;
-            case 5:
+            case "5":
                   outputData["1"]  = {
                             labels: ['Total Weight of Tasks Completed'],
                             datasets: [{
@@ -530,7 +530,7 @@ function sample_performance_metric(targetId){
 
                    return {'title': title, 'sampleData': outputData};
                   break;
-            case 6:
+            case "6":
                   outputData["2"]  = {
                             labels: ['Total Weight of Tasks Completed'],
                             datasets: [{
@@ -581,7 +581,7 @@ function sample_performance_metric(targetId){
                           };
                    return {'title': title, 'sampleData': outputData};
                   break;
-            case 7:
+            case "7":
                   outputData["1"]  = {
                             labels: ['Total Weight of Tasks Completed'],
                             datasets: [{
@@ -608,7 +608,7 @@ function sample_performance_metric(targetId){
                           };
                    return {'title': title, 'sampleData': outputData};
                   break;
-            case 8:
+            case "8":
                   outputData["1"]  = {
                             labels: ['Total Weight of Tasks Completed'],
                             datasets: [{
@@ -635,7 +635,7 @@ function sample_performance_metric(targetId){
                           };
                    return {'title': title, 'sampleData': outputData};
                   break;
-            case 9:
+            case "9":
                   outputData["2"]  = {
                             labels: ['Total Weight of Tasks Completed'],
                             datasets: [{
@@ -650,7 +650,7 @@ function sample_performance_metric(targetId){
                           };
                    return {'title': title, 'sampleData': outputData};
                   break;
-            case 10:
+            case "10":
                   outputData["4"]  = {
                             labels: ['Total Weight of Tasks Completed'],
                             datasets: [{
@@ -677,7 +677,7 @@ function sample_performance_metric(targetId){
                           };
                    return {'title': title, 'sampleData': outputData};
                   break;
-            case 11:
+            case "11":
                   outputData["2"]  = {
                             labels: ['Total Weight of Tasks Completed'],
                             datasets: [{
@@ -716,7 +716,7 @@ function sample_performance_metric(targetId){
                           };
                    return {'title': title, 'sampleData': outputData};
                   break;
-            case 12:
+            case "12":
                   outputData["4"]  = {
                             labels: ['Total Weight of Tasks Completed'],
                             datasets: [{
@@ -743,7 +743,7 @@ function sample_performance_metric(targetId){
                           };
                    return {'title': title, 'sampleData': outputData};
                   break;
-            case 13:
+            case "13":
                   outputData["3"]  = {
                             labels: ['Total Weight of Tasks Completed'],
                             datasets: [{
@@ -770,7 +770,7 @@ function sample_performance_metric(targetId){
                           };
                    return {'title': title, 'sampleData': outputData};
                   break;
-            case 14:
+            case "14":
                   outputData["3"]  = {
                             labels: ['Total Weight of Tasks Completed'],
                             datasets: [{
